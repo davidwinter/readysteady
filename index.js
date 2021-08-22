@@ -1,15 +1,9 @@
 import path from 'node:path';
 import fs from 'node:fs';
-import process from 'node:process';
 
-import {Octokit} from '@octokit/core';
-import {restEndpointMethods} from '@octokit/plugin-rest-endpoint-methods';
-import {paginateRest} from '@octokit/plugin-paginate-rest';
+import client from './client.js';
 
 const readySteady = async ({owner, repo, tag, force = false, files} = {}) => {
-	const MyOctokit = Octokit.plugin(restEndpointMethods, paginateRest);
-	const client = new MyOctokit({auth: process.env.GITHUB_TOKEN});
-
 	if (!await isTagAvailable({client, owner, repo, tag})) {
 		throw new Error(`tag is not available: ${tag}`);
 	}
