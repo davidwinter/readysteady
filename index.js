@@ -1,0 +1,129 @@
+import path from 'node:path';
+import fs from 'node:fs';
+
+const readySteady = async (client, owner, repo, tag, force = false, files) => {
+	if ( ! await isTagAvailable(client, owner, repo, tag)) {
+		throw new Error(`tag is not available: ${tag}`);
+	}
+
+	const releaseName = tag.slice(1);
+
+	const existingDraftRelease = await getExistingDraftRelease(client, owner, repo, releaseName);
+
+	if (existingDraftRelease) {
+		if (force) {
+			await deleteDraftRelease(client, owner, repo, existingDraftRelease);
+		} else {
+			throw new Error('existing draft release found, and force not used');
+		}
+	}
+
+	const newDraftRelease = await createDraftRelease(client, owner, repo, tag, releaseName);
+
+	await uploadFilesToDraftRelease(client, fs, owner, repo, newDraftRelease, files);
+
+	// return await getExistingDraftRelease(client, owner, repo, releaseName);
+};
+
+const isTagAvailable = async (client, owner, repo, tag) => {
+	try {
+		await client.rest.repos.getReleaseByTag({
+			owner,
+			repo,
+			tag,
+		});
+
+		return false;
+	} catch {
+		return true;
+	}
+};
+
+const getExistingDraftRelease = async (client, owner, repo, releaseName) => {
+	const iterator = client.paginate.iterator(client.rest.repos.listReleases, {
+		owner,
+		repo,
+		per_page: 100, // eslint-disable-line camelcase
+	});
+
+	let existingDraft = null;
+
+	for await (const {data: releases} of iterator) {
+		if (existingDraft !== null) {
+			break;
+		}
+
+		for (const release of releases) {
+			if (existingDraft !== null) {
+				break;
+			}
+
+			if (release.name === releaseName && release.draft) {
+				existingDraft = release;
+			}
+		}
+	}
+
+	return existingDraft;
+};
+
+const deleteDraftRelease = async (client, owner, repo, release) => {
+	if (release.draft === false) {
+		throw new Error('release is not a draft');
+	}
+
+	await client.rest.repos.deleteRelease({
+		owner,
+		repo,
+		release_id: release.id, // eslint-disable-line camelcase
+	});
+
+	return true;
+};
+
+const createDraftRelease = async (client, owner, repo, tag, releaseName) => {
+	try {
+		const release = await client.rest.repos.createRelease({
+			owner,
+			repo,
+			tag_name: tag, // eslint-disable-line camelcase
+			name: releaseName,
+			draft: true,
+			prerelease: false,
+		});
+
+		return release;
+	} catch {
+		return false;
+	}
+};
+
+const uploadFilesToDraftRelease = async (client, fs, owner, repo, release, files) => {
+	if (release.data.draft === false) {
+		throw new Error('release is not a draft');
+	}
+
+	for (const file of files) {
+		const fileData = fs.readFileSync(file);
+
+		await client.rest.repos.uploadReleaseAsset({
+			owner,
+			repo,
+			release_id: release.data.id, // eslint-disable-line camelcase
+			name: path.basename(file),
+			data: fileData,
+		});
+	}
+
+	return true;
+};
+
+export default readySteady;
+
+export {
+	isTagAvailable,
+	getExistingDraftRelease,
+	deleteDraftRelease,
+	createDraftRelease,
+	uploadFilesToDraftRelease,
+};
