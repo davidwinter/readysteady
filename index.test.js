@@ -22,7 +22,7 @@ test('passes if tag is available', async t => {
 	const result = await isTagAvailable({
 		client,
 		owner: 'davidwinter',
-		repo: 'nimblenote',
+		repo: 'readysteady',
 		tag: 'v3.1.1',
 	});
 
@@ -41,7 +41,7 @@ test('fails if tag is not available', async t => {
 	const result = await isTagAvailable({
 		client,
 		owner: 'davidwinter',
-		repo: 'nimblenote',
+		repo: 'readysteady',
 		tag: 'v3.1.1',
 	});
 
@@ -83,7 +83,7 @@ test('returns existing draft release if it exists', async t => {
 	const result = await getExistingDraftRelease({
 		client,
 		owner: 'davidwinter',
-		repo: 'nimblenote',
+		repo: 'readysteady',
 		releaseName: '3.1.1',
 	});
 
@@ -115,7 +115,7 @@ test('returns null if no existing draft release exists', async t => {
 	const result = await getExistingDraftRelease({
 		client,
 		owner: 'davidwinter',
-		repo: 'nimblenote',
+		repo: 'readysteady',
 		releaseName: '3.1.1',
 	});
 
@@ -134,7 +134,7 @@ test('passes if release is deleted', async t => {
 	const result = await deleteDraftRelease({
 		client,
 		owner: 'davidwinter',
-		repo: 'nimblenote',
+		repo: 'readysteady',
 		release: {id: 1},
 	});
 
@@ -151,7 +151,7 @@ test('throws error if deletion fails as release is not a draft', async t => {
 		await deleteDraftRelease({
 			client,
 			owner: 'davidwinter',
-			repo: 'nimblenote',
+			repo: 'readysteady',
 			release,
 		});
 	});
@@ -171,7 +171,7 @@ test('creates a release', async t => {
 	const release = await createDraftRelease({
 		client,
 		owner: 'davidwinter',
-		repo: 'nimblenote',
+		repo: 'readysteady',
 		tag: 'v3.1.1',
 		releaseName: '3.1.1',
 	});
@@ -193,7 +193,7 @@ test('fails if unable to create a release', async t => {
 	const release = await createDraftRelease({
 		client,
 		owner: 'davidwinter',
-		repo: 'nimblenote',
+		repo: 'readysteady',
 		tag: 'v3.1.1',
 		releaseName: '3.1.1',
 	});
@@ -226,7 +226,7 @@ test('able to upload files to a release', async t => {
 		client,
 		fs,
 		owner: 'davidwinter',
-		repo: 'nimblenote',
+		repo: 'readysteady',
 		release,
 		files: ['./README.md'],
 	});
@@ -250,7 +250,7 @@ test('will not upload files to a non-draft release', async t => {
 			client,
 			fs,
 			owner: 'davidwinter',
-			repo: 'nimblenote',
+			repo: 'readysteady',
 			release,
 			files: ['./README.md'],
 		});
@@ -262,7 +262,7 @@ test('will not upload files to a non-draft release', async t => {
 test('it will create a draft release with files', async t => {
 	const release = await readySteady({
 		owner: 'davidwinter',
-		repo: 'nimblenote',
+		repo: 'readysteady',
 		tag: 'v3.1.1',
 		force: true,
 		files: ['./README.md'],

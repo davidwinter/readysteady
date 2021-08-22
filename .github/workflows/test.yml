@@ -20,3 +20,5 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm test
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
