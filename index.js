@@ -1,31 +1,39 @@
 import path from 'node:path';
 import fs from 'node:fs';
+import process from 'node:process';
 
-const readySteady = async (client, owner, repo, tag, force = false, files) => {
-	if ( ! await isTagAvailable(client, owner, repo, tag)) {
+import {Octokit} from '@octokit/core';
+import {restEndpointMethods} from '@octokit/plugin-rest-endpoint-methods';
+import {paginateRest} from '@octokit/plugin-paginate-rest';
+
+const readySteady = async ({owner, repo, tag, force = false, files} = {}) => {
+	const MyOctokit = Octokit.plugin(restEndpointMethods, paginateRest);
+	const client = new MyOctokit({auth: process.env.GITHUB_TOKEN});
+
+	if (!await isTagAvailable({client, owner, repo, tag})) {
 		throw new Error(`tag is not available: ${tag}`);
 	}
 
 	const releaseName = tag.slice(1);
 
-	const existingDraftRelease = await getExistingDraftRelease(client, owner, repo, releaseName);
+	const existingDraftRelease = await getExistingDraftRelease({client, owner, repo, releaseName});
 
 	if (existingDraftRelease) {
 		if (force) {
-			await deleteDraftRelease(client, owner, repo, existingDraftRelease);
+			await deleteDraftRelease({client, owner, repo, release: existingDraftRelease});
 		} else {
 			throw new Error('existing draft release found, and force not used');
 		}
 	}
 
-	const newDraftRelease = await createDraftRelease(client, owner, repo, tag, releaseName);
+	const newDraftRelease = await createDraftRelease({client, owner, repo, tag, releaseName});
 
-	await uploadFilesToDraftRelease(client, fs, owner, repo, newDraftRelease, files);
+	await uploadFilesToDraftRelease({client, fs, owner, repo, release: newDraftRelease, files});
 
-	// return await getExistingDraftRelease(client, owner, repo, releaseName);
+	return getExistingDraftRelease({client, owner, repo, releaseName});
 };
 
-const isTagAvailable = async (client, owner, repo, tag) => {
+const isTagAvailable = async ({client, owner, repo, tag} = {}) => {
 	try {
 		await client.rest.repos.getReleaseByTag({
 			owner,
@@ -39,7 +47,7 @@ const isTagAvailable = async (client, owner, repo, tag) => {
 	}
 };
 
-const getExistingDraftRelease = async (client, owner, repo, releaseName) => {
+const getExistingDraftRelease = async ({client, owner, repo, releaseName} = {}) => {
 	const iterator = client.paginate.iterator(client.rest.repos.listReleases, {
 		owner,
 		repo,
@@ -67,7 +75,7 @@ const getExistingDraftRelease = async (client, owner, repo, releaseName) => {
 	return existingDraft;
 };
 
-const deleteDraftRelease = async (client, owner, repo, release) => {
+const deleteDraftRelease = async ({client, owner, repo, release} = {}) => {
 	if (release.draft === false) {
 		throw new Error('release is not a draft');
 	}
@@ -81,7 +89,7 @@ const deleteDraftRelease = async (client, owner, repo, release) => {
 	return true;
 };
 
-const createDraftRelease = async (client, owner, repo, tag, releaseName) => {
+const createDraftRelease = async ({client, owner, repo, tag, releaseName} = {}) => {
 	try {
 		const release = await client.rest.repos.createRelease({
 			owner,
@@ -98,24 +106,31 @@ const createDraftRelease = async (client, owner, repo, tag, releaseName) => {
 	}
 };
 
-const uploadFilesToDraftRelease = async (client, fs, owner, repo, release, files) => {
+const uploadFilesToDraftRelease = async ({client, fs, owner, repo, release, files} = {}) => {
 	if (release.data.draft === false) {
 		throw new Error('release is not a draft');
 	}
 
+	const uploads = [];
+
 	for (const file of files) {
 		const fileData = fs.readFileSync(file);
 
-		await client.rest.repos.uploadReleaseAsset({
+		const stats = fs.statSync(file);
+
+		uploads.push(client.rest.repos.uploadReleaseAsset({
 			owner,
 			repo,
 			release_id: release.data.id, // eslint-disable-line camelcase
 			name: path.basename(file),
 			data: fileData,
-		});
+			headers: {
+				'Content-Length': stats.size,
+			},
+		}));
 	}
 
-	return true;
+	return Promise.all(uploads);
 };
 
 export default readySteady;

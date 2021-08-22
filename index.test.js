@@ -1,12 +1,6 @@
 import test from 'ava';
 
-import {Octokit} from '@octokit/core';
-import {restEndpointMethods} from '@octokit/plugin-rest-endpoint-methods';
-import {paginateRest} from '@octokit/plugin-paginate-rest';
-
-import readySteady from './index.js';
-
-import {
+import readySteady, {
 	isTagAvailable,
 	getExistingDraftRelease,
 	deleteDraftRelease,
@@ -25,7 +19,12 @@ test('passes if tag is available', async t => {
 		},
 	};
 
-	const result = await isTagAvailable(client, 'davidwinter', 'nimblenote', 'v3.1.1');
+	const result = await isTagAvailable({
+		client,
+		owner: 'davidwinter',
+		repo: 'nimblenote',
+		tag: 'v3.1.1',
+	});
 
 	t.is(result, true);
 });
@@ -39,7 +38,12 @@ test('fails if tag is not available', async t => {
 		},
 	};
 
-	const result = await isTagAvailable(client, 'davidwinter', 'nimblenote', 'v3.1.1');
+	const result = await isTagAvailable({
+		client,
+		owner: 'davidwinter',
+		repo: 'nimblenote',
+		tag: 'v3.1.1',
+	});
 
 	t.is(result, false);
 });
@@ -76,7 +80,12 @@ test('returns existing draft release if it exists', async t => {
 		},
 	};
 
-	const result = await getExistingDraftRelease(client, 'davidwinter', 'nimblenote', '3.1.1');
+	const result = await getExistingDraftRelease({
+		client,
+		owner: 'davidwinter',
+		repo: 'nimblenote',
+		releaseName: '3.1.1',
+	});
 
 	t.is(result.id, 1);
 });
@@ -103,11 +112,15 @@ test('returns null if no existing draft release exists', async t => {
 		},
 	};
 
-	const result = await getExistingDraftRelease(client, 'davidwinter', 'nimblenote', '3.1.1');
+	const result = await getExistingDraftRelease({
+		client,
+		owner: 'davidwinter',
+		repo: 'nimblenote',
+		releaseName: '3.1.1',
+	});
 
 	t.is(result, null);
 });
-
 
 test('passes if release is deleted', async t => {
 	const client = {
@@ -118,7 +131,12 @@ test('passes if release is deleted', async t => {
 		},
 	};
 
-	const result = await deleteDraftRelease(client, 'davidwinter', 'nimblenote', {id: 1});
+	const result = await deleteDraftRelease({
+		client,
+		owner: 'davidwinter',
+		repo: 'nimblenote',
+		release: {id: 1},
+	});
 
 	t.is(result, true);
 });
@@ -130,7 +148,12 @@ test('throws error if deletion fails as release is not a draft', async t => {
 	};
 
 	const error = await t.throwsAsync(async () => {
-		await deleteDraftRelease(client, 'davidwinter', 'nimblenote', release);
+		await deleteDraftRelease({
+			client,
+			owner: 'davidwinter',
+			repo: 'nimblenote',
+			release,
+		});
 	});
 
 	t.is(error.message, 'release is not a draft');
@@ -145,7 +168,13 @@ test('creates a release', async t => {
 		},
 	};
 
-	const release = await createDraftRelease(client, 'davidwinter', 'nimblenote', 'v3.1.1', '3.1.1');
+	const release = await createDraftRelease({
+		client,
+		owner: 'davidwinter',
+		repo: 'nimblenote',
+		tag: 'v3.1.1',
+		releaseName: '3.1.1',
+	});
 
 	t.is(release.name, '3.1.1');
 });
@@ -161,7 +190,13 @@ test('fails if unable to create a release', async t => {
 		},
 	};
 
-	const release = await createDraftRelease(client, 'davidwinter', 'nimblenote', 'v3.1.1', '3.1.1');
+	const release = await createDraftRelease({
+		client,
+		owner: 'davidwinter',
+		repo: 'nimblenote',
+		tag: 'v3.1.1',
+		releaseName: '3.1.1',
+	});
 
 	t.is(release, false);
 });
@@ -177,6 +212,7 @@ test('able to upload files to a release', async t => {
 
 	const fs = {
 		readFileSync: () => 'test',
+		statSync: () => 123,
 	};
 
 	const release = {
@@ -186,7 +222,14 @@ test('able to upload files to a release', async t => {
 		},
 	};
 
-	const result = await uploadFilesToDraftRelease(client, fs, 'davidwinter', 'nimblenote', release, ['./README.md']);
+	const result = await uploadFilesToDraftRelease({
+		client,
+		fs,
+		owner: 'davidwinter',
+		repo: 'nimblenote',
+		release,
+		files: ['./README.md'],
+	});
 
 	t.truthy(result);
 });
@@ -196,22 +239,36 @@ test('will not upload files to a non-draft release', async t => {
 	const fs = {};
 
 	const release = {
-		id: 1,
-		draft: false,
+		data: {
+			id: 1,
+			draft: false,
+		},
 	};
 
 	const error = await t.throwsAsync(async () => {
-		await uploadFilesToDraftRelease(client, fs, 'davidwinter', 'nimblenote', release, ['./README.md']);
+		await uploadFilesToDraftRelease({
+			client,
+			fs,
+			owner: 'davidwinter',
+			repo: 'nimblenote',
+			release,
+			files: ['./README.md'],
+		});
 	});
 
 	t.is(error.message, 'release is not a draft');
 });
 
 test('it will create a draft release with files', async t => {
-	const MyOctokit = Octokit.plugin(restEndpointMethods, paginateRest);
-	const octokit = new MyOctokit({ auth: process.env.GITHUB_TOKEN });
+	const release = await readySteady({
+		owner: 'davidwinter',
+		repo: 'nimblenote',
+		tag: 'v3.1.1',
+		force: true,
+		files: ['./README.md'],
+	});
 
-	const release = await readySteady(octokit, 'davidwinter', 'nimblenote', 'v3.1.1', true, ['./README.md']);
-
-	t.is(release.data.name, '3.1.1');
+	t.is(release.name, '3.1.1');
+	t.is(release.draft, true);
+	t.is(release.assets[0].name, 'README.md');
 });
