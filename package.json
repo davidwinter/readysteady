@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "description": "A simple way to upload your assets and prepare a new draft release on GitHub",
   "main": "index.js",
+  "bin": "./cli.js",
   "scripts": {
     "test": "ava",
     "lint": "xo"
@@ -17,6 +18,8 @@
   "dependencies": {
     "@octokit/core": "^3.5.1",
     "@octokit/plugin-paginate-rest": "^2.15.1",
-    "@octokit/plugin-rest-endpoint-methods": "^5.8.0"
+    "@octokit/plugin-rest-endpoint-methods": "^5.8.0",
+    "meow": "^10.1.1",
+    "ora": "^5.4.1"
   }
 }
