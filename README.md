@@ -1,6 +1,6 @@
 # readysteady
 
-[![test](https://github.com/davidwinter/readysteady/actions/workflows/test.yml/badge.svg)](https://github.com/davidwinter/readysteady/actions/workflows/test.yml)
+[![test](https://github.com/davidwinter/readysteady/actions/workflows/test.yml/badge.svg)](https://github.com/davidwinter/readysteady/actions/workflows/test.yml) [![npm](https://img.shields.io/npm/v/readysteady)](https://www.npmjs.com/package/readysteady) [![npm](https://img.shields.io/npm/dw/readysteady)](https://www.npmjs.com/package/readysteady)
 
 > A simple way to upload your assets and prepare a new draft release on GitHub
 
