@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import process from 'node:process';
 
-import ora from 'ora';
+import Ora from 'ora';
 import meow from 'meow';
 
 import client from './client.js';
@@ -85,5 +85,5 @@ const {owner, repo, tag, force, files} = cli.flags;
 })();
 
 function createSpinner(text) {
-	return ora(text).start();
+	return (new Ora(text)).start();
 }
