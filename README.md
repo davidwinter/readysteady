@@ -30,4 +30,4 @@ To authenticate with GitHub, it depends on a `GITHUB_TOKEN` environment variable
 
 # License
 
-MIT
+MIT &copy; 2021 David Winter
