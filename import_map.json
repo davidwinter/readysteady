@@ -1,0 +1,17 @@
+{
+	"imports": {
+		"node:process": "https://deno.land/std@0.105.0/node/process.ts",
+		"node:path": "https://deno.land/std@0.105.0/node/path.ts",
+		"node:fs": "https://deno.land/std@0.105.0/node/fs.ts",
+		"ora": "https://deno.land/x/kia@v0.1.0/mod.ts",
+		"meow": "https://esm.sh/meow",
+		"@octokit/core": "https://cdn.skypack.dev/@octokit/core",
+		"@octokit/plugin-paginate-rest": "https://cdn.skypack.dev/@octokit/plugin-paginate-rest",
+		"@octokit/plugin-rest-endpoint-methods": "https://cdn.skypack.dev/@octokit/plugin-rest-endpoint-methods"
+	},
+	"scopes": {
+		"https://cdn.esm.sh/v45/yargs-parser@20.2.9/deno/yargs-parser.js": {
+			"/v45/path-browserify@1.0.1/deno/path-browserify.js": "https://deno.land/std@0.105.0/node/path.ts"
+		}
+	}
+}
