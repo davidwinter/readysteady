@@ -5,9 +5,15 @@ import process from 'node:process';
 
 import Ora from 'ora';
 import meow from 'meow';
+import updateNotifier from 'update-notifier';
+import readJson from 'read-package-json';
 
 import client from './client.js';
 import * as readysteady from './index.js';
+
+readJson('./package.json', (error, data) => {
+	updateNotifier({pkg: data});
+});
 
 const cli = meow({
 	importMeta: import.meta,
