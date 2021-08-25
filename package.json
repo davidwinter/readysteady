@@ -44,6 +44,6 @@
 		"@octokit/plugin-paginate-rest": "^2.15.1",
 		"@octokit/plugin-rest-endpoint-methods": "^5.8.0",
 		"meow": "^10.1.1",
-		"ora": "^5.4.1"
+		"ora": "^6.0.0"
 	}
 }
