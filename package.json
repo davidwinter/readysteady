@@ -1,25 +1,49 @@
 {
-  "name": "readysteady",
-  "type": "module",
-  "version": "1.0.0",
-  "description": "A simple way to upload your assets and prepare a new draft release on GitHub",
-  "main": "index.js",
-  "bin": "./cli.js",
-  "scripts": {
-    "test": "ava",
-    "lint": "xo"
-  },
-  "author": "",
-  "license": "MIT",
-  "devDependencies": {
-    "ava": "^3.15.0",
-    "xo": "^0.44.0"
-  },
-  "dependencies": {
-    "@octokit/core": "^3.5.1",
-    "@octokit/plugin-paginate-rest": "^2.15.1",
-    "@octokit/plugin-rest-endpoint-methods": "^5.8.0",
-    "meow": "^10.1.1",
-    "ora": "^5.4.1"
-  }
+	"name": "readysteady",
+	"type": "module",
+	"version": "1.0.0",
+	"description": "A simple way to upload your assets and prepare a new draft release on GitHub",
+	"main": "index.js",
+	"bin": "./cli.js",
+	"scripts": {
+		"test": "ava",
+		"lint": "xo"
+	},
+	"files": [
+		"index.js",
+		"cli.js",
+		"client.js"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/davidwinter/readysteady.git"
+	},
+	"keywords": [
+		"github",
+		"releases",
+		"artifacts",
+		"ci"
+	],
+	"author": {
+		"name": "David Winter",
+		"email": "i@djw.me",
+		"url": "https://davidwinter.dev"
+	},
+	"license": "MIT",
+	"funding": "https://github.com/davidwinter/readysteady?sponsor=1",
+	"bugs": {
+		"url": "https://github.com/davidwinter/readysteady/issues"
+	},
+	"homepage": "https://github.com/davidwinter/readysteady#readme",
+	"devDependencies": {
+		"ava": "^3.15.0",
+		"xo": "^0.44.0"
+	},
+	"dependencies": {
+		"@octokit/core": "^3.5.1",
+		"@octokit/plugin-paginate-rest": "^2.15.1",
+		"@octokit/plugin-rest-endpoint-methods": "^5.8.0",
+		"meow": "^10.1.1",
+		"ora": "^5.4.1"
+	}
 }
