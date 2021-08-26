@@ -85,7 +85,7 @@ const {owner, repo, tag, force, files} = cli.flags;
 
 		spinner.succeed(`A new draft release was created: ${releaseName}`);
 
-		if (files.length) {
+		if (files.length > 0) {
 			spinner = createSpinner('Uploading files to the draft release');
 
 			await readysteady.uploadFilesToDraftRelease({client, fs, owner, repo, release: newDraftRelease, files});
