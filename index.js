@@ -1,9 +1,11 @@
 import path from 'node:path';
 import fs from 'node:fs';
 
-import client from './client.js';
+import createClient from './client.js';
 
 const readySteady = async ({owner, repo, tag, force = false, files} = {}) => {
+	const client = createClient();
+
 	if (!await isTagAvailable({client, owner, repo, tag})) {
 		throw new Error(`tag is not available: ${tag}`);
 	}
