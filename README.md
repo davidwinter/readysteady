@@ -4,8 +4,6 @@
 
 > A simple way to upload your assets and prepare a new draft release on GitHub
 
-**Why?** Interacting directly with the GitHub API, or using one of the many API clients, involves using multiple calls and checks to achieve what should be quite a simple task. `readysteady` wraps this all up into a self-contained binary with a friendly UX that works great directly on your desktop or within CI.
-
 What **readysteady** does is quite simple:
 
 1. Checks that a release for the specified tag doesn't already exist
@@ -14,6 +12,8 @@ What **readysteady** does is quite simple:
 4. Upload the corresponding file assets
 
 To authenticate with GitHub, it depends on a `GITHUB_TOKEN` environment variable.
+
+**Why?** Interacting directly with the GitHub API, or using one of the many API clients, involves using multiple calls and checks to achieve what should be quite a simple task. `readysteady` wraps this all up into a self-contained command with a friendly UX that works great directly on your desktop or within CI.
 
 ## Install
 
