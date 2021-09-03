@@ -13,7 +13,6 @@ import createClient from './client.js';
 import * as readysteady from './index.js';
 
 readJson(fileURLToPath(new URL('package.json', import.meta.url)), (error, data) => {
-
 	updateNotifier({pkg: data, updateCheckInterval: 0}).notify({isGlobal: true});
 
 	app();
