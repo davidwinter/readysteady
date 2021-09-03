@@ -6,8 +6,7 @@
 	"main": "index.js",
 	"bin": "./cli.js",
 	"scripts": {
-		"test": "ava",
-		"lint": "xo"
+		"test": "xo && ava"
 	},
 	"files": [
 		"index.js",
