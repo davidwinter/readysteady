@@ -80,6 +80,8 @@ function app() {
 				} else {
 					throw new Error('An existing draft release was found. Use --force to delete and replace with a new draft release');
 				}
+			} else {
+				spinner.succeed('No existing draft release found');
 			}
 
 			spinner = createSpinner(`Creating a new draft release: ${releaseName}`);
