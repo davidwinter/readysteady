@@ -2,6 +2,7 @@
 
 import fs from 'node:fs';
 import process from 'node:process';
+import {fileURLToPath} from 'node:url';
 
 import Ora from 'ora';
 import meow from 'meow';
@@ -11,7 +12,8 @@ import readJson from 'read-package-json';
 import createClient from './client.js';
 import * as readysteady from './index.js';
 
-readJson('./package.json', (error, data) => {
+readJson(fileURLToPath(new URL('package.json', import.meta.url)), (error, data) => {
+
 	updateNotifier({pkg: data, updateCheckInterval: 0}).notify({isGlobal: true});
 
 	app();
