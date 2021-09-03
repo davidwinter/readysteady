@@ -4,6 +4,8 @@
 
 > A simple way to upload your assets and prepare a new draft release on GitHub
 
+![screenshot](https://raw.githubusercontent.com/davidwinter/readysteady/main/screenshot.gif)
+
 What **readysteady** does is quite simple:
 
 1. Checks that a release for the specified tag doesn't already exist
