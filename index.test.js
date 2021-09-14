@@ -190,15 +190,17 @@ test('fails if unable to create a release', async t => {
 		},
 	};
 
-	const release = await createDraftRelease({
-		client,
-		owner: 'davidwinter',
-		repo: 'readysteady',
-		tag: 'v3.1.1',
-		releaseName: '3.1.1',
+	const error = await t.throwsAsync(async () => {
+		await createDraftRelease({
+			client,
+			owner: 'davidwinter',
+			repo: 'readysteady',
+			tag: 'v3.1.1',
+			releaseName: '3.1.1',
+		});
 	});
 
-	t.is(release, false);
+	t.is(error.message, 'something went wrong');
 });
 
 test('able to upload files to a release', async t => {

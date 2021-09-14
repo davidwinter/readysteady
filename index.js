@@ -86,20 +86,16 @@ const deleteDraftRelease = async ({client, owner, repo, release} = {}) => {
 };
 
 const createDraftRelease = async ({client, owner, repo, tag, releaseName} = {}) => {
-	try {
-		const release = await client.rest.repos.createRelease({
-			owner,
-			repo,
-			tag_name: tag, // eslint-disable-line camelcase
-			name: releaseName,
-			draft: true,
-			prerelease: false,
-		});
+	const release = await client.rest.repos.createRelease({
+		owner,
+		repo,
+		tag_name: tag, // eslint-disable-line camelcase
+		name: releaseName,
+		draft: true,
+		prerelease: false,
+	});
 
-		return release;
-	} catch {
-		return false;
-	}
+	return release;
 };
 
 const uploadFilesToDraftRelease = async ({client, fs, owner, repo, release, files} = {}) => {
