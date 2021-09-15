@@ -264,7 +264,7 @@ test('will not upload files to a non-draft release', async t => {
 test('it will create a draft release with files', async t => {
 	const release = await readySteady({
 		owner: 'davidwinter',
-		repo: 'readysteady',
+		repo: 'readysteady-smoke-tests',
 		tag: 'v3.1.1',
 		force: true,
 		files: ['./README.md'],
