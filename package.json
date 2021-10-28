@@ -36,7 +36,7 @@
 	"homepage": "https://github.com/davidwinter/readysteady#readme",
 	"devDependencies": {
 		"ava": "^3.15.0",
-		"xo": "^0.45.0"
+		"xo": "^0.46.0"
 	},
 	"dependencies": {
 		"@octokit/core": "^3.5.1",
