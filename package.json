@@ -44,7 +44,7 @@
 		"@octokit/plugin-rest-endpoint-methods": "^5.8.0",
 		"meow": "^10.1.1",
 		"ora": "^6.0.0",
-		"read-package-json": "^4.0.0",
+		"read-package-json": "^5.0.1",
 		"update-notifier": "^5.1.0"
 	}
 }
