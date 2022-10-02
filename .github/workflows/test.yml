@@ -6,9 +6,6 @@ on:
   pull_request_target:
     branches: [ main ]
 
-permissions:
-  # downscope
-
 jobs:
   test:
 
@@ -23,4 +20,4 @@ jobs:
       - run: npm ci
       - run: npm test
         env:
-          GITHUB_TOKEN: ${{ secrets.SMOKE_TESTS_ACCESS_TOKEN }}
+          SMOKE_TEST_TOKEN: ${{ secrets.SMOKE_TESTS_ACCESS_TOKEN }}

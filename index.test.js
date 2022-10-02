@@ -262,6 +262,8 @@ test('will not upload files to a non-draft release', async t => {
 });
 
 test('it will create a draft release with files', async t => {
+	process.env.GITHUB_TOKEN = process.env.GITHUB_TOKEN || process.env.SMOKE_TEST_TOKEN
+
 	const release = await readySteady({
 		owner: 'davidwinter',
 		repo: 'readysteady-smoke-tests',
