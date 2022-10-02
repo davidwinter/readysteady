@@ -270,6 +270,8 @@ test('it will create a draft release with files', async t => {
 		files: ['./README.md'],
 	});
 
+	console.log(release);
+
 	t.is(release.name, '3.1.1');
 	t.is(release.draft, true);
 	t.is(release.assets[0].name, 'README.md');
