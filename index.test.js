@@ -1,5 +1,7 @@
 import test from 'ava';
 
+process.env.GITHUB_TOKEN = process.env.SMOKE_TEST_TOKEN;
+
 import readySteady, {
 	isTagAvailable,
 	getExistingDraftRelease,
@@ -269,8 +271,6 @@ test('it will create a draft release with files', async t => {
 		force: true,
 		files: ['./README.md'],
 	});
-
-	console.log(release);
 
 	t.is(release.name, '3.1.1');
 	t.is(release.draft, true);
