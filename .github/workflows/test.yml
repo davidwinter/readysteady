@@ -6,7 +6,8 @@ on:
   pull_request_target:
     branches: [ main ]
 
-permissions: write-all
+permissions:
+  # downscope
 
 jobs:
   test:
