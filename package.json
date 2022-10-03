@@ -5,6 +5,9 @@
 	"description": "A simple way to upload your assets and prepare a new draft release on GitHub",
 	"main": "index.js",
 	"bin": "./cli.js",
+	"engines": {
+		"node": ">=16"
+	},
 	"scripts": {
 		"test": "xo && ava --verbose"
 	},
