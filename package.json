@@ -5,6 +5,9 @@
 	"description": "A simple way to upload your assets and prepare a new draft release on GitHub",
 	"main": "index.js",
 	"bin": "./cli.js",
+	"engines": {
+		"node": ">=16"
+	},
 	"scripts": {
 		"test": "xo && ava --verbose"
 	},
@@ -44,7 +47,7 @@
 		"@octokit/plugin-rest-endpoint-methods": "^5.8.0",
 		"meow": "^10.1.1",
 		"ora": "^6.0.0",
-		"read-package-json": "^4.0.0",
+		"read-package-json": "^5.0.2",
 		"update-notifier": "^5.1.0"
 	}
 }

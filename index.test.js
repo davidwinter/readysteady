@@ -1,5 +1,8 @@
+import process from 'node:process';
+
 import test from 'ava';
 
+/* eslint-disable import/first */
 process.env.GITHUB_TOKEN = process.env.SMOKE_TEST_TOKEN;
 
 import readySteady, {
@@ -9,6 +12,7 @@ import readySteady, {
 	createDraftRelease,
 	uploadFilesToDraftRelease,
 } from './index.js';
+/* eslint-enable */
 
 test('passes if tag is available', async t => {
 	const client = {
