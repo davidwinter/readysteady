@@ -6,7 +6,7 @@
 	"main": "index.js",
 	"bin": "./cli.js",
 	"engines": {
-		"node": ">=16"
+		"node": ">=12"
 	},
 	"scripts": {
 		"test": "xo && ava --verbose"
