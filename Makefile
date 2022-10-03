@@ -4,7 +4,7 @@ setup:
 	npm install
 
 lint:
-	npm exec xo
+	npx xo
 
 test:
-	npm exec ava
+	npx ava
