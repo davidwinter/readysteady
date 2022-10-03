@@ -18,7 +18,7 @@ test('passes if tag is available', async t => {
 	const client = {
 		rest: {
 			repos: {
-				getReleaseByTag: (_owner, _repo, _tag) => {
+				getReleaseByTag(_owner, _repo, _tag) {
 					throw new Error('404');
 				},
 			},
@@ -189,7 +189,7 @@ test('fails if unable to create a release', async t => {
 	const client = {
 		rest: {
 			repos: {
-				createRelease: async () => {
+				async createRelease() {
 					throw new Error('something went wrong');
 				},
 			},
