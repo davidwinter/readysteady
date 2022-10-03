@@ -2,9 +2,9 @@ import process from 'node:process';
 
 import test from 'ava';
 
+/* eslint-disable import/first */
 process.env.GITHUB_TOKEN = process.env.SMOKE_TEST_TOKEN;
 
-/* eslint-disable import/first */
 import readySteady, {
 	isTagAvailable,
 	getExistingDraftRelease,
