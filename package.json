@@ -42,7 +42,7 @@
 		"xo": "^0.52.3"
 	},
 	"dependencies": {
-		"@octokit/core": "^3.5.1",
+		"@octokit/core": "^4.0.5",
 		"@octokit/plugin-paginate-rest": "^2.15.1",
 		"@octokit/plugin-rest-endpoint-methods": "^5.8.0",
 		"meow": "^10.1.1",
