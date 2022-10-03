@@ -44,7 +44,7 @@
 	"dependencies": {
 		"@octokit/core": "^3.5.1",
 		"@octokit/plugin-paginate-rest": "^2.15.1",
-		"@octokit/plugin-rest-endpoint-methods": "^5.8.0",
+		"@octokit/plugin-rest-endpoint-methods": "^6.6.2",
 		"meow": "^10.1.1",
 		"ora": "^6.0.0",
 		"read-package-json": "^5.0.2",
